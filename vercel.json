@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/relink_umkm_interactive_demo.html",
+      "destination": "/index.html"
+    }
+  ]
+}

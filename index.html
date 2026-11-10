@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLink UMKM — Connecting Waste to Opportunity</title>
+    <meta name="description" content="ReLink UMKM connects micro and small enterprises generating reusable production byproducts with local makers seeking alternative raw materials across Bali.">
+    <meta name="theme-color" content="#E9E5D9">
+    <meta property="og:title" content="ReLink UMKM — Connecting Waste to Opportunity">
+    <meta property="og:description" content="AI-powered circular economy collaboration platform pairing production byproducts with local enterprise material needs.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23E9E5D9'/%3E%3Ccircle cx='25' cy='32' r='12' fill='none' stroke='%235B5F46' stroke-width='5'/%3E%3Ccircle cx='39' cy='32' r='12' fill='none' stroke='%2398432E' stroke-width='5'/%3E%3C/svg%3E">
+
+    <!-- Fontshare: separate requests so both General Sans and Satoshi load reliably -->
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --canvas: #E9E5D9;
+            --surface: #F3EFE6;
+            --accent: #DFD9C9;
+            --ink: #25231F;
+            --muted: #59554E;
+            --moss: #5B5F46;
+            --moss-dark: #454935;
+            --moss-tint: rgba(91, 95, 70, 0.14);
+            --terracotta: #98432E;
+            --terracotta-dark: #7E3523;
+            --terracotta-light: #EFE3DF;
+            --border: rgba(37, 35, 31, 0.11);
+            --border-strong: rgba(37, 35, 31, 0.22);
+            --font-heading: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-sans: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-color: #BDB6A7 var(--canvas);
+            scrollbar-width: thin;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.5;
+            caret-color: var(--moss);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background-color: var(--moss);
+            color: #FFFFFF;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--moss);
+            outline-offset: 2px;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--canvas); }
+        ::-webkit-scrollbar-thumb { background: #BDB6A7; border-radius: 9999px; }
+
+        h1, h2, h3, h4, .font-heading {
+            margin: 0;
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        p { margin: 0; }
+
+        button, input, select, textarea {
+            font: inherit;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            border: 0;
+            background: none;
+            padding: 0;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            z-index: 60;
+            background: var(--ink);
+            color: var(--surface);
+            padding: 0.625rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .skip-link:focus {
+            left: 1rem;
+            top: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 80rem;
+            margin-inline: auto;
+            padding-inline: 1rem;
+        }
+        @media (min-width: 640px) {
+            .container { padding-inline: 2rem; }
+        }
+
+        /* Header & Sticky Navigation */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background-color: rgba(233, 229, 217, 0.94);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.55rem 0.75rem;
+            padding-block: 0.75rem;
+        }
+        @media (min-width: 1024px) {
+            .header-inner {
+                padding-block: 1.15rem;
+            }
+        }
+
+        .brand-link {
+            display: block;
+            border-radius: 0.5rem;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.625rem;
+        }
+
+        .brand-name {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+
+        .brand-badge {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            padding: 0.125rem 0.625rem;
+            border-radius: 9999px;
+            background-color: var(--accent);
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .brand-tagline {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.01em;
+            margin-top: 0.125rem;
+        }
+
+        .header-nav {
+            order: 3;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            border-top: 1px solid var(--border);
+            padding-top: 0.55rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+        @media (max-width: 479px) {
+            .brand-badge { display: none; }
+            .brand-name { font-size: 1.05rem; }
+            .brand-tagline { font-size: 0.6875rem; }
+            .header-actions .btn-primary {
+                padding: 0.45rem 0.75rem;
+                font-size: 0.6875rem;
+                letter-spacing: 0.04em;
+            }
+            .header-nav {
+                flex-wrap: wrap;
+                overflow-x: visible;
+                gap: 0.4rem 0.85rem;
+                font-size: 0.78rem;
+            }
+        }
+        .header-nav::-webkit-scrollbar { display: none; }
+
+        @media (min-width: 1024px) {
+            .header-nav {
+                order: 2;
+                width: auto;
+                gap: 2rem;
+                font-size: 0.875rem;
+                border-top: 0;
+                padding-top: 0;
+                overflow-x: visible;
+            }
+        }
+
+        .nav-link {
+            color: var(--muted);
+            padding-block: 0.125rem;
+            border-bottom: 1.5px solid transparent;
+            transition: color 0.18s ease, border-color 0.18s ease;
+        }
+        .nav-link:hover { color: var(--ink); }
+        .nav-link.is-active {
+            color: var(--ink);
+            font-weight: 600;
+            border-bottom-color: var(--ink);
+        }
+
+        .nav-assistant {
+            color: var(--terracotta);
+            font-weight: 600;
+            transition: opacity 0.18s ease;
+        }
+        .nav-assistant:hover { opacity: 0.8; }
+
+        .header-actions {
+            order: 2;
+            display: flex;
+            align-items: center;
+        }
+        @media (min-width: 1024px) {
+            .header-actions { order: 3; }
+        }
+
+        /* Buttons */
+        .btn-primary {
+            padding: 0.625rem 1.15rem;
+            border-radius: 9999px;
+            background-color: var(--ink);
+            color: var(--surface);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background-color 0.18s ease, transform 0.12s ease;
+        }
+        .btn-primary:hover { background-color: var(--moss); }
+        .btn-primary:active { transform: scale(0.98); }
+
+        .btn-moss {
+            padding: 0.625rem 1.35rem;
+            border-radius: 9999px;
+            background-color: var(--moss);
+            color: #FFFFFF;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            transition: background-color 0.18s ease, transform 0.12s ease;
+        }
+        .btn-moss:hover { background-color: var(--moss-dark); }
+        .btn-moss:active { transform: scale(0.98); }
+
+        .btn-subtle {
+            padding: 0.5625rem 1rem;
+            border-radius: 9999px;
+            background-color: var(--canvas);
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+        }
+        .btn-subtle:hover {
+            color: var(--ink);
+            border-color: var(--border-strong);
+        }
+        .btn-subtle.is-active {
+            background-color: var(--moss);
+            color: #FFFFFF;
+            border-color: var(--moss);
+        }
+
+        /* Main Layout & Sections */
+        .main-content {
+            flex: 1;
+            padding-block: 2.5rem 3.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4.5rem;
+        }
+
+        .section-target {
+            scroll-margin-top: 6.5rem;
+        }
+        @media (max-width: 1023px) {
+            .section-target { scroll-margin-top: 8.25rem; }
+        }
+
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            .section-header-row {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+        }
+        @media (min-width: 768px) {
+            .section-header-md {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+        }
+
+        .eyebrow {
+            display: block;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-weight: 600;
+        }
+        .eyebrow-moss { color: var(--moss); }
+        .eyebrow-terracotta { color: var(--terracotta); }
+
+        .hero-title {
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            line-height: 1.12;
+            color: var(--ink);
+            max-width: 42rem;
+            margin-top: 0.375rem;
+        }
+
+        .hero-copy {
+            font-size: 0.9375rem;
+            color: var(--muted);
+            max-width: 28rem;
+            line-height: 1.65;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 2.3vw, 1.875rem);
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--ink);
+            margin-top: 0.25rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.8125rem;
+            color: var(--muted);
+            max-width: 28rem;
+            line-height: 1.55;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        @media (min-width: 1024px) {
+            .kpi-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        .kpi-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.35rem 1.5rem;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        @media (min-width: 640px) {
+            .kpi-card { padding: 1.625rem 1.75rem; }
+        }
+
+        .kpi-label {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .kpi-bottom {
+            margin-top: 1.35rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .kpi-number {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 3vw, 2.875rem);
+            font-weight: 600;
+            line-height: 1;
+            color: var(--ink);
+        }
+
+        .kpi-note { font-size: 0.75rem; font-weight: 500; }
+        .kpi-note-moss { color: var(--moss); }
+        .kpi-note-terracotta { color: var(--terracotta); }
+        .kpi-note-muted { color: var(--muted); }
+
+        /* Surface Cards & Matching */
+        .stack-md { display: flex; flex-direction: column; gap: 1.5rem; }
+        .stack-lg { display: flex; flex-direction: column; gap: 2rem; }
+
+        .surface-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .surface-card { padding: 2rem; }
+        }
+
+        .match-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .match-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-top: 0.25rem;
+        }
+
+        .score-pill {
+            padding: 0.3rem 0.875rem;
+            border-radius: 9999px;
+            background-color: var(--terracotta);
+            color: #FFFFFF;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .pair-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+        @media (min-width: 768px) {
+            .pair-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        .pair-box {
+            background-color: var(--canvas);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .pair-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .role-pill {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            padding: 0.2rem 0.625rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .role-supplier { background-color: var(--moss); }
+        .role-seeker { background-color: var(--terracotta); }
+
+        .pair-loc { font-size: 0.75rem; color: var(--muted); }
+        .pair-name { font-family: var(--font-heading); font-weight: 600; font-size: 1rem; color: var(--ink); padding-top: 0.25rem; }
+        .pair-detail { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+        .pair-detail strong { color: var(--ink); font-weight: 600; }
+
+        .match-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+        @media (min-width: 1024px) {
+            .match-footer {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .match-reason {
+            font-size: 0.8125rem;
+            color: var(--muted);
+            line-height: 1.55;
+            max-width: 44rem;
+        }
+        .match-reason strong {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ink);
+            margin-right: 0.35rem;
+        }
+
+        .match-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.625rem;
+            flex-shrink: 0;
+        }
+
+        /* Marketplace Controls & Cards */
+        .segmented-tabs {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.3125rem;
+            border-radius: 9999px;
+            align-self: flex-start;
+        }
+
+        .seg-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--muted);
+            transition: background-color 0.18s ease, color 0.18s ease;
+        }
+        .seg-btn:hover { color: var(--ink); }
+        .seg-btn.is-active {
+            background-color: var(--ink);
+            color: var(--surface);
+            font-weight: 600;
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 1rem;
+        }
+        @media (min-width: 1024px) {
+            .filter-bar {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .cat-pills {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cat-pill {
+            padding: 0.425rem 0.95rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: var(--canvas);
+            color: var(--muted);
+            border: 1px solid var(--border);
+            transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+        }
+        .cat-pill:hover {
+            color: var(--ink);
+            border-color: var(--border-strong);
+        }
+        .cat-pill.is-active {
+            background-color: var(--moss);
+            color: #FFFFFF;
+            border-color: var(--moss);
+            font-weight: 600;
+        }
+
+        .filter-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+        }
+        @media (min-width: 640px) {
+            .filter-inputs {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .pill-input, .pill-select {
+            background-color: var(--canvas);
+            border: 1px solid var(--border);
+            color: var(--ink);
+            font-size: 0.75rem;
+            padding: 0.625rem 1rem;
+            border-radius: 9999px;
+            transition: border-color 0.18s ease;
+        }
+        .pill-input::placeholder { color: var(--muted); }
+        .pill-input:focus, .pill-select:focus { border-color: var(--ink); outline: none; }
+        @media (min-width: 640px) {
+            .pill-input { width: 16rem; }
+        }
+
+        .market-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .market-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1024px) {
+            .market-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        .market-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.22s ease, border-color 0.22s ease;
+        }
+        .market-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-strong);
+        }
+
+        .card-media {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            width: 100%;
+            overflow: hidden;
+            background-color: var(--accent);
+        }
+
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.45s ease;
+        }
+        .market-card:hover .card-media img {
+            transform: scale(1.04);
+        }
+
+        .card-badges {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .badge-type {
+            padding: 0.28rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .badge-supply { background-color: var(--moss); }
+        .badge-need { background-color: var(--terracotta); }
+
+        .badge-meta {
+            padding: 0.28rem 0.75rem;
+            border-radius: 9999px;
+            background-color: rgba(243, 239, 230, 0.92);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--border);
+            color: var(--ink);
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.35rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .card-org-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 0.8125rem;
+            color: var(--muted);
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            padding: 0.9rem 1.5rem 1.35rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .card-avail {
+            display: block;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .card-qty {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .btn-card {
+            padding: 0.5rem 0.95rem;
+            border-radius: 9999px;
+            background-color: var(--ink);
+            color: var(--surface);
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            flex-shrink: 0;
+            transition: background-color 0.18s ease;
+        }
+        .btn-card:hover { background-color: var(--moss); }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 3rem 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Collaborations & Supply Gap */
+        .collab-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding-top: 0.5rem;
+        }
+        @media (min-width: 1024px) {
+            .collab-grid { grid-template-columns: 2fr 1fr; }
+        }
+
+        .collab-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .collab-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .collab-item {
+            padding-block: 1.1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+        .collab-item:first-child { padding-top: 0; }
+        .collab-item:last-child { padding-bottom: 0; border-bottom: 0; }
+        @media (min-width: 640px) {
+            .collab-item {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .collab-parties {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.45rem;
+            font-family: var(--font-heading);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+        .collab-to { color: var(--muted); font-weight: 400; }
+
+        .status-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.425rem 0.95rem;
+            border-radius: 9999px;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: transform 0.12s ease, border-color 0.18s ease, opacity 0.18s ease;
+        }
+        .status-btn:hover { border-color: var(--border-strong); }
+        .status-btn:active { transform: scale(0.97); }
+        .status-pending { background-color: var(--accent); color: var(--ink); }
+        .status-accepted { background-color: var(--terracotta-light); color: var(--terracotta); }
+        .status-progress { background-color: var(--moss-tint); color: var(--moss-dark); }
+        .status-completed { background-color: var(--moss); color: #FFFFFF; }
+
+        .gap-card {
+            background-color: var(--canvas);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .gap-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .gap-qty {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            padding: 0.15rem 0.625rem;
+            border-radius: 9999px;
+            background-color: var(--accent);
+            color: var(--ink);
+            white-space: nowrap;
+        }
+
+        .summary-callout {
+            background-color: var(--canvas);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        /* Modals & Drawer */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background-color: rgba(37, 35, 31, 0.45);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-backdrop[hidden] { display: none; }
+
+        .modal-panel {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 34rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 24px 48px -16px rgba(37, 35, 31, 0.22);
+            display: flex;
+            flex-direction: column;
+            gap: 1.35rem;
+        }
+        @media (min-width: 640px) {
+            .modal-panel { padding: 2rem; }
+        }
+
+        .drawer-root {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+        }
+        .drawer-root[hidden] { display: none; }
+
+        .drawer-scrim {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(37, 35, 31, 0.36);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+
+        .drawer-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 28rem;
+            background-color: var(--surface);
+            border-left: 1px solid var(--border);
+            box-shadow: -16px 0 40px rgba(37, 35, 31, 0.16);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .drawer-panel { padding: 2rem; }
+        }
+
+        .modal-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .close-btn {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            font-weight: 600;
+            padding: 0.35rem 0.6rem;
+            border-radius: 9999px;
+            transition: color 0.18s ease, background-color 0.18s ease;
+        }
+        .close-btn:hover {
+            color: var(--ink);
+            background-color: var(--canvas);
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 0.375rem;
+        }
+
+        .field-control {
+            width: 100%;
+            background-color: var(--canvas);
+            border: 1px solid var(--border);
+            padding: 0.625rem 0.9rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--ink);
+            transition: border-color 0.18s ease;
+        }
+        .field-control:focus { border-color: var(--ink); outline: none; }
+        .field-control[readonly] {
+            background-color: rgba(233, 229, 217, 0.7);
+            color: var(--muted);
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+        }
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+        @media (min-width: 640px) {
+            .form-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        .disclaimer-box {
+            background-color: var(--terracotta-light);
+            border: 1px solid rgba(152, 67, 46, 0.28);
+            padding: 0.95rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--ink);
+            line-height: 1.55;
+        }
+        .disclaimer-title {
+            display: block;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--terracotta);
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        /* Chat Drawer */
+        .chat-stream {
+            flex: 1;
+            overflow-y: auto;
+            padding-block: 1.25rem;
+            padding-right: 0.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .chat-bot-msg {
+            background-color: var(--canvas);
+            border: 1px solid var(--border);
+            padding: 0.95rem 1rem;
+            border-radius: 0.9rem;
+            font-size: 0.8125rem;
+            color: var(--ink);
+            line-height: 1.55;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .chat-user-wrap {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .chat-user-msg {
+            background-color: var(--ink);
+            color: var(--surface);
+            padding: 0.85rem 1rem;
+            border-radius: 0.9rem;
+            font-size: 0.8125rem;
+            max-width: 85%;
+            line-height: 1.5;
+        }
+
+        .quick-prompts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .quick-chip {
+            text-align: left;
+            font-size: 0.75rem;
+            padding: 0.425rem 0.8rem;
+            border-radius: 9999px;
+            background-color: var(--canvas);
+            border: 1px solid var(--border);
+            color: var(--ink);
+            transition: background-color 0.16s ease, border-color 0.16s ease;
+        }
+        .quick-chip:hover {
+            background-color: var(--accent);
+            border-color: var(--border-strong);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 60;
+            background-color: var(--ink);
+            color: var(--surface);
+            padding: 0.7rem 1.2rem;
+            border-radius: 1.125rem;
+            box-shadow: 0 12px 30px rgba(37, 35, 31, 0.25);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            width: max-content;
+            max-width: calc(100vw - 2rem);
+            text-align: center;
+        }
+        .toast[hidden] { display: none; }
+
+        /* Footer */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            padding-block: 2.25rem;
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        @media (min-width: 640px) {
+            .site-footer {
+                flex-direction: row;
+                text-align: left;
+            }
+        }
+
+        /* Subtle Motion */
+        .fade-in {
+            animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .fade-in, .market-card, .card-media img {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="#overview" class="brand-link" onclick="setActiveNav('overview')">
+                <div class="brand-row">
+                    <span class="brand-name">ReLink UMKM</span>
+                    <span class="brand-badge">MVP v1.0</span>
+                </div>
+                <p class="brand-tagline">Connecting Waste to Opportunity</p>
+            </a>
+
+            <nav aria-label="Primary navigation" class="header-nav">
+                <a href="#overview" class="nav-link is-active" data-nav="overview" aria-current="page" onclick="setActiveNav('overview')">Overview</a>
+                <a href="#matching" class="nav-link" data-nav="matching" onclick="setActiveNav('matching')">AI Matching</a>
+                <a href="#marketplace" class="nav-link" data-nav="marketplace" onclick="setActiveNav('marketplace')">Marketplace</a>
+                <a href="#collaborations" class="nav-link" data-nav="collaborations" onclick="setActiveNav('collaborations')">Collaborations</a>
+                <button type="button" onclick="toggleAssistant(true, this)" class="nav-assistant">AI Assistant</button>
+            </nav>
+
+            <div class="header-actions">
+                <button type="button" onclick="openCreateModal(this)" class="btn-primary">
+                    Submit Listing / Need
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="container main-content">
+        <!-- 1. OVERVIEW -->
+        <section id="overview" class="section-target fade-in">
+            <div class="section-header section-header-row">
+                <div>
+                    <span class="eyebrow eyebrow-moss">Circular Economy Intelligence</span>
+                    <h1 class="hero-title">
+                        Transforming Production Byproducts into Shared Enterprise Resources.
+                    </h1>
+                </div>
+                <p class="hero-copy">
+                    ReLink UMKM uses semantic natural language analysis and rule-based filtering to connect micro and small enterprises generating reusable production waste with local makers seeking alternative raw materials.
+                </p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <span class="kpi-label">Registered Enterprises</span>
+                    <div class="kpi-bottom">
+                        <span id="kpi-umkm" class="kpi-number tabular-nums">24</span>
+                        <span class="kpi-note kpi-note-moss">Pilot Target: 20</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <span class="kpi-label">Available Waste Listings</span>
+                    <div class="kpi-bottom">
+                        <span id="kpi-waste" class="kpi-number tabular-nums">32</span>
+                        <span class="kpi-note kpi-note-muted">Active Supply</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <span class="kpi-label">Active Material Needs</span>
+                    <div class="kpi-bottom">
+                        <span id="kpi-needs" class="kpi-number tabular-nums">21</span>
+                        <span id="kpi-unmet-note" class="kpi-note kpi-note-terracotta">2 Unmet Needs</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <span class="kpi-label">Verified Collaborations</span>
+                    <div class="kpi-bottom">
+                        <span id="kpi-collab" class="kpi-number tabular-nums">8</span>
+                        <span class="kpi-note kpi-note-moss">92% AI Relevance</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. AI-BASED WASTE MATCHING -->
+        <section id="matching" class="section-target stack-md">
+            <div class="section-header section-header-md">
+                <div>
+                    <span class="eyebrow eyebrow-terracotta">Semantic &amp; Rule-Based Pairing</span>
+                    <h2 class="section-title">AI-Based Waste Matching</h2>
+                </div>
+                <p class="section-subtitle">
+                    Candidate pairings ranked by material similarity, condition compatibility, volume alignment, and regional proximity.
+                </p>
+            </div>
+
+            <div id="matching-container" class="stack-md"></div>
+        </section>
+
+        <!-- 3. RESOURCE MARKETPLACE -->
+        <section id="marketplace" class="section-target stack-lg">
+            <div class="section-header section-header-md">
+                <div>
+                    <span class="eyebrow eyebrow-moss">Circular Material Exchange</span>
+                    <h2 class="section-title">Resource Marketplace</h2>
+                    <p class="section-subtitle" style="margin-top: 0.25rem;">Browse documented production byproducts from Suppliers and material requests from Seekers.</p>
+                </div>
+
+                <div class="segmented-tabs" role="group" aria-label="Filter by listing type">
+                    <button type="button" onclick="setMarketType('all')" id="mkt-all" class="seg-btn is-active" aria-pressed="true">
+                        All Listings
+                    </button>
+                    <button type="button" onclick="setMarketType('supply')" id="mkt-supply" class="seg-btn" aria-pressed="false">
+                        Waste Supply
+                    </button>
+                    <button type="button" onclick="setMarketType('need')" id="mkt-need" class="seg-btn" aria-pressed="false">
+                        Material Needs
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="cat-pills" role="group" aria-label="Filter by material category">
+                    <button type="button" onclick="filterCategory('All')" class="cat-pill is-active" data-cat="All" aria-pressed="true">All Categories</button>
+                    <button type="button" onclick="filterCategory('Organic')" class="cat-pill" data-cat="Organic" aria-pressed="false">Organic</button>
+                    <button type="button" onclick="filterCategory('Textile')" class="cat-pill" data-cat="Textile" aria-pressed="false">Textile</button>
+                    <button type="button" onclick="filterCategory('Wood')" class="cat-pill" data-cat="Wood" aria-pressed="false">Wood</button>
+                    <button type="button" onclick="filterCategory('Biomass & Craft')" class="cat-pill" data-cat="Biomass & Craft" aria-pressed="false">Biomass &amp; Craft</button>
+                </div>
+
+                <div class="filter-inputs">
+                    <input
+                        type="search"
+                        id="market-search"
+                        aria-label="Search marketplace by material, location, or enterprise"
+                        oninput="renderMarketplace()"
+                        placeholder="Search material, location, or enterprise..."
+                        class="pill-input"
+                    >
+                    <select id="condition-filter" aria-label="Filter by material condition" onchange="renderMarketplace()" class="pill-select">
+                        <option value="All">All Conditions</option>
+                        <option value="Dry">Condition: Dry</option>
+                        <option value="Wet">Condition: Wet</option>
+                        <option value="Clean">Condition: Clean</option>
+                        <option value="Sorted">Condition: Sorted</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="market-meta-row">
+                <span id="market-count" aria-live="polite">Showing 6 of 6 listings</span>
+            </div>
+
+            <div id="marketplace-grid" class="market-grid"></div>
+        </section>
+
+        <!-- 4. COLLABORATION TRACKER & UNMET NEEDS -->
+        <section id="collaborations" class="section-target collab-grid">
+            <div class="surface-card stack-md">
+                <div class="collab-header">
+                    <div>
+                        <span class="eyebrow eyebrow-moss">Workflow &amp; Lifecycle</span>
+                        <h3 class="section-title" style="font-size: 1.35rem;">Collaboration Status Tracking</h3>
+                    </div>
+                    <span id="collab-count-badge" class="brand-badge" style="font-size: 0.7rem; padding: 0.3rem 0.85rem;">3 Recorded</span>
+                </div>
+
+                <p class="section-subtitle" style="max-width: none;">
+                    Click any status pill below to advance the collaboration state (<strong style="color: var(--ink);">Pending &rarr; Accepted &rarr; In Progress &rarr; Completed</strong>).
+                </p>
+
+                <div id="collab-list" class="collab-list"></div>
+            </div>
+
+            <div class="surface-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                        <span class="eyebrow eyebrow-terracotta">Supply Gap Monitor</span>
+                        <h3 class="section-title" style="font-size: 1.35rem;">Unmet Community Needs</h3>
+                    </div>
+                    <p style="font-size: 0.78rem; color: var(--muted); line-height: 1.55;">
+                        Material requests currently lacking a compatible local Supplier within the requested pickup distance:
+                    </p>
+                    <div id="unmet-needs-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+                </div>
+
+                <div class="summary-callout">
+                    <span class="eyebrow eyebrow-moss">AI Community Summary</span>
+                    <p id="community-summary-text" style="font-size: 0.8rem; color: var(--ink); line-height: 1.6;"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL 1: AI COLLABORATION ACTION DRAFT -->
+    <div id="draft-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="draft-modal-title" hidden onclick="handleBackdropClick(event, closeDraftModal)">
+        <div class="modal-panel fade-in" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <div>
+                    <span class="eyebrow eyebrow-terracotta">Human-in-the-Loop Review</span>
+                    <h3 id="draft-modal-title" class="section-title" style="font-size: 1.5rem;">AI Collaboration Action Draft</h3>
+                </div>
+                <button type="button" onclick="closeDraftModal()" class="close-btn">Close</button>
+            </div>
+
+            <div class="pair-box">
+                <div class="pair-meta" style="font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">
+                    <span style="color: var(--moss);">AI Synthesis</span>
+                    <span id="draft-score" style="color: var(--terracotta);">94% Semantic Match</span>
+                </div>
+                <p id="draft-summary" style="font-size: 0.875rem; color: var(--ink); line-height: 1.55;"></p>
+            </div>
+
+            <form id="draft-form" onsubmit="submitDraftCollaboration(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                <input type="hidden" id="draft-match-id">
+                <input type="hidden" id="draft-location">
+
+                <div class="form-grid-2">
+                    <div class="pair-box" style="padding: 0.875rem;">
+                        <span class="eyebrow" style="color: var(--muted); font-size: 0.6875rem;">Supplier (Waste Provider)</span>
+                        <p id="draft-supplier" style="font-size: 0.875rem; font-weight: 600; color: var(--ink);"></p>
+                    </div>
+                    <div class="pair-box" style="padding: 0.875rem;">
+                        <span class="eyebrow" style="color: var(--muted); font-size: 0.6875rem;">Seeker (Material Receiver)</span>
+                        <p id="draft-seeker" style="font-size: 0.875rem; font-weight: 600; color: var(--ink);"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="draft-material" class="field-label">Matched Material</label>
+                    <input type="text" id="draft-material" readonly class="field-control">
+                </div>
+
+                <div class="form-grid-2">
+                    <div>
+                        <label for="draft-qty" class="field-label">Proposed Quantity</label>
+                        <input type="text" id="draft-qty" required class="field-control">
+                    </div>
+                    <div>
+                        <label for="draft-freq" class="field-label">Transfer Frequency</label>
+                        <select id="draft-freq" class="field-control">
+                            <option value="Weekly">Weekly</option>
+                            <option value="Bi-Weekly">Bi-Weekly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="One-Time Batch">One-Time Batch</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="draft-notes" class="field-label">Action Plan &amp; Sample Verification Notes</label>
+                    <textarea id="draft-notes" rows="2" class="field-control">Request collaboration and schedule initial physical sample inspection to verify moisture level and material purity.</textarea>
+                </div>
+
+                <div class="disclaimer-box">
+                    <strong class="disclaimer-title">Mandatory Technical Disclaimer</strong>
+                    Semantic similarity scores do not guarantee technical compatibility or safety. Both enterprises must physically verify material quality before production use.
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; padding-top: 0.25rem;">
+                    <button type="button" onclick="closeDraftModal()" class="btn-subtle">Cancel</button>
+                    <button type="submit" class="btn-moss">Approve &amp; Send Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: SUBMIT LISTING OR NEED -->
+    <div id="create-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="create-modal-title" hidden onclick="handleBackdropClick(event, closeCreateModal)">
+        <div class="modal-panel fade-in" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <div>
+                    <span class="eyebrow eyebrow-moss">Live MVP Data Entry</span>
+                    <h3 id="create-modal-title" class="section-title" style="font-size: 1.5rem;">Submit Resource Listing or Need</h3>
+                </div>
+                <button type="button" onclick="closeCreateModal()" class="close-btn">Close</button>
+            </div>
+
+            <form id="create-form" onsubmit="handleCreateSubmit(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <span class="field-label">Submission Type</span>
+                    <div class="segmented-tabs" style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr);">
+                        <button type="button" onclick="setFormType('supply')" id="form-type-supply" class="seg-btn is-active" aria-pressed="true">
+                            Waste Supply (Supplier)
+                        </button>
+                        <button type="button" onclick="setFormType('need')" id="form-type-need" class="seg-btn" aria-pressed="false">
+                            Material Need (Seeker)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div>
+                        <label for="inp-umkm" class="field-label">Enterprise Name</label>
+                        <input type="text" id="inp-umkm" required value="Nusa Coconut Roasters" class="field-control">
+                    </div>
+                    <div>
+                        <label for="inp-location" class="field-label">Location</label>
+                        <select id="inp-location" class="field-control">
+                            <option value="Badung Regency">Badung Regency</option>
+                            <option value="Denpasar City">Denpasar City</option>
+                            <option value="Gianyar Regency">Gianyar Regency</option>
+                            <option value="Tabanan Regency">Tabanan Regency</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div>
+                        <label for="inp-material" class="field-label">Material Title</label>
+                        <input type="text" id="inp-material" required value="Cleaned Coconut Shells" class="field-control">
+                    </div>
+                    <div>
+                        <label for="inp-category" class="field-label">Category &amp; Photo Preset</label>
+                        <select id="inp-category" class="field-control">
+                            <option value="Biomass & Craft">Biomass &amp; Craft (Coconut / Shells)</option>
+                            <option value="Organic">Organic (Coffee / Botanicals)</option>
+                            <option value="Textile">Textile (Cotton / Linen Scraps)</option>
+                            <option value="Wood">Wood (Sawdust / Offcuts)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-3">
+                    <div>
+                        <label for="inp-qty" class="field-label">Quantity &amp; Frequency</label>
+                        <input type="text" id="inp-qty" required value="50 kg / week" class="field-control">
+                    </div>
+                    <div>
+                        <label for="inp-condition" class="field-label">Material Condition</label>
+                        <select id="inp-condition" class="field-control">
+                            <option value="Dry">Dry</option>
+                            <option value="Clean">Clean</option>
+                            <option value="Wet">Wet</option>
+                            <option value="Sorted">Sorted</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="inp-price" class="field-label">Transfer Terms</label>
+                        <select id="inp-price" class="field-control">
+                            <option value="Free (Self-Pickup)">Free (Self-Pickup)</option>
+                            <option value="Negotiable">Negotiable</option>
+                            <option value="Low-Cost Recovery">Low-Cost Recovery</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="inp-desc" class="field-label">Material Characteristics / Intended Application</label>
+                    <textarea id="inp-desc" rows="2" required class="field-control">Dehusked mature coconut shells with minimal fiber residue, sun-dried and suitable for craft bowls or activated charcoal briquettes.</textarea>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; padding-top: 0.25rem;">
+                    <button type="button" onclick="closeCreateModal()" class="btn-subtle">Cancel</button>
+                    <button type="submit" class="btn-primary">Publish &amp; Run AI Matching</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SLIDE-OVER: AI COMMUNITY ASSISTANT -->
+    <div id="assistant-drawer" class="drawer-root" role="dialog" aria-modal="true" aria-labelledby="assistant-title" hidden>
+        <div onclick="toggleAssistant(false)" class="drawer-scrim"></div>
+        <div class="drawer-panel fade-in">
+            <div class="modal-head">
+                <div>
+                    <span class="eyebrow eyebrow-terracotta">Conversational Intelligence</span>
+                    <h3 id="assistant-title" class="section-title" style="font-size: 1.25rem;">AI Community Assistant</h3>
+                    <p style="font-size: 0.75rem; color: var(--muted); margin-top: 0.125rem;">Material upcycling guidance &amp; live partner discovery</p>
+                </div>
+                <button type="button" onclick="toggleAssistant(false)" class="close-btn">Close</button>
+            </div>
+
+            <div id="chat-messages" class="chat-stream" aria-live="polite">
+                <div class="chat-bot-msg">
+                    <span class="eyebrow eyebrow-moss">System Ready</span>
+                    <p>Welcome to the ReLink UMKM Assistant. Ask me about upcycling production waste, finding matching enterprises in Bali, or structuring your material listings.</p>
+                </div>
+            </div>
+
+            <div style="padding-top: 1rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+                    <span class="eyebrow" style="color: var(--muted); font-size: 0.6875rem;">Suggested Prompts</span>
+                    <div class="quick-prompts">
+                        <button type="button" onclick="sendQuickPrompt('I have 20 kg of fabric scraps monthly. Who needs them?')" class="quick-chip">
+                            Who needs 20 kg fabric scraps?
+                        </button>
+                        <button type="button" onclick="sendQuickPrompt('Alternative uses for 15 kg wet coffee grounds')" class="quick-chip">
+                            Uses for wet coffee grounds
+                        </button>
+                        <button type="button" onclick="sendQuickPrompt('Summarize unmet material needs in Badung and Tabanan')" class="quick-chip">
+                            Summarize unmet needs
+                        </button>
+                    </div>
+                </div>
+
+                <form onsubmit="handleChatSubmit(event)" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="text" id="chat-input" aria-label="Ask the AI Community Assistant" placeholder="Ask about waste utilization or matching partners..." class="pill-input" style="flex: 1; width: auto; padding: 0.7rem 1rem;">
+                    <button type="submit" class="btn-primary" style="padding: 0.75rem 1.2rem;">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+        <span id="toast-message">Updated</span>
+    </div>
+
+    <footer class="container site-footer">
+        <p>ReLink UMKM — AI-Powered Circular Economy Collaboration Platform (PRD v1.0)</p>
+        <p style="font-weight: 600; color: var(--ink);">"One Business's Waste Can Become Another Business's Resource."</p>
+    </footer>
+
+    <script>
+        let currentMarketType = 'all';
+        let currentCategoryFilter = 'All';
+        let formEntryType = 'supply';
+        let toastTimer = null;
+        let lastFocusedTrigger = null;
+
+        const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'%3E%3Crect width='800' height='500' fill='%23DFD9C9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2359554E' font-family='sans-serif' font-size='22'%3EMaterial Sample%3C/text%3E%3C/svg%3E";
+
+        const categoryImages = {
+            'Organic': 'https://images.unsplash.com/photo-1773118360501-00f979fd9322?auto=format&fit=crop&w=900&q=80',
+            'Textile': 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=900&q=80',
+            'Wood': 'https://images.unsplash.com/photo-1769353086138-19ee65291a04?auto=format&fit=crop&w=900&q=80',
+            'Biomass & Craft': 'https://images.unsplash.com/photo-1531414552322-18181005fd82?auto=format&fit=crop&w=900&q=80'
+        };
+
+        let aiMatches = [
+            {
+                id: 'm1',
+                score: 94,
+                material: 'Spent Espresso Coffee Grounds',
+                category: 'Organic',
+                supplier: {
+                    name: 'Kopi Berkah Roastery',
+                    qty: '15 kg / week',
+                    condition: 'Wet & Uncontaminated',
+                    location: 'Badung Regency'
+                },
+                seeker: {
+                    name: 'Kreatif Mandiri Craft Studio',
+                    qty: '10 kg / week',
+                    purpose: 'Bio-composite craft coasters & natural aromatic blocks',
+                    location: 'Badung Regency'
+                },
+                reasoning: 'High semantic similarity between "Spent espresso grounds" and "Coffee residue for bio-composite". Weekly supply (15 kg) exceeds required volume (10 kg) within the same regency.',
+                feedback: false,
+                requested: false
+            },
+            {
+                id: 'm2',
+                score: 89,
+                material: 'Sorted Cotton & Linen Fabric Offcuts',
+                category: 'Textile',
+                supplier: {
+                    name: 'Nusantara Apparel Studio',
+                    qty: '25 kg / month',
+                    condition: 'Dry & Sorted',
+                    location: 'Denpasar City'
+                },
+                seeker: {
+                    name: 'Surya Upcycled Bags & Goods',
+                    qty: '15 kg / month',
+                    purpose: 'Patchwork tote bags, pouches, and quilted accessories',
+                    location: 'Denpasar City'
+                },
+                reasoning: 'Pre-sorted earth-tone cotton scraps larger than 15x20cm align directly with patchwork pattern requirements, reducing raw fabric procurement costs.',
+                feedback: false,
+                requested: false
+            },
+            {
+                id: 'm3',
+                score: 86,
+                material: 'Untreated Teak Wood Sawdust',
+                category: 'Wood',
+                supplier: {
+                    name: 'Jati Bali Furniture Workshop',
+                    qty: '40 kg / week',
+                    condition: 'Dry & Clean',
+                    location: 'Gianyar Regency'
+                },
+                seeker: {
+                    name: 'Terra Biomass & Mushroom Farm',
+                    qty: '30 kg / week',
+                    purpose: 'Oyster mushroom substrate logs & compressed briquettes',
+                    location: 'Gianyar Regency'
+                },
+                reasoning: 'Kiln-dried teak sawdust free from synthetic varnish or chemical glues satisfies organic substrate purity filters in Gianyar.',
+                feedback: false,
+                requested: false
+            }
+        ];
+
+        let marketplaceItems = [
+            {
+                id: 'w1',
+                type: 'supply',
+                title: 'Spent Arabica Coffee Grounds',
+                umkm: 'Kopi Berkah Roastery',
+                category: 'Organic',
+                qty: '15 kg / week',
+                availability: 'Recurring Weekly',
+                condition: 'Wet',
+                location: 'Badung Regency',
+                price: 'Free (Self-Pickup)',
+                image: 'https://images.unsplash.com/photo-1773118360501-00f979fd9322?auto=format&fit=crop&w=900&q=80',
+                desc: 'Daily espresso extraction byproduct stored in sealed food-grade buckets. Zero plastic or paper filter contamination.'
+            },
+            {
+                id: 'w2',
+                type: 'supply',
+                title: 'Natural Linen & Cotton Offcuts',
+                umkm: 'Nusantara Apparel Studio',
+                category: 'Textile',
+                qty: '25 kg / month',
+                availability: 'Recurring Monthly',
+                condition: 'Clean',
+                location: 'Denpasar City',
+                price: 'Negotiable',
+                image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=900&q=80',
+                desc: 'Unbleached linen and organic cotton garment cutting remnants. Minimum piece size 15x25 cm, dry and neatly bundled.'
+            },
+            {
+                id: 'w3',
+                type: 'supply',
+                title: 'Fine Untreated Teak Sawdust',
+                umkm: 'Jati Bali Furniture Workshop',
+                category: 'Wood',
+                qty: '40 kg / week',
+                availability: 'Recurring Weekly',
+                condition: 'Dry',
+                location: 'Gianyar Regency',
+                price: 'Free (Self-Pickup)',
+                image: 'https://images.unsplash.com/photo-1769353086138-19ee65291a04?auto=format&fit=crop&w=900&q=80',
+                desc: 'Pure raw teak wood shavings and fine sawdust from joinery milling. Completely free from chemical finishes or adhesives.'
+            },
+            {
+                id: 'w4',
+                type: 'supply',
+                title: 'Dehusked Mature Coconut Shells',
+                umkm: 'Sari Kelapa Virgin Oil Press',
+                category: 'Biomass & Craft',
+                qty: '50 kg / week',
+                availability: 'Recurring Weekly',
+                condition: 'Dry',
+                location: 'Badung Regency',
+                price: 'Low-Cost Recovery',
+                image: 'https://images.unsplash.com/photo-1531414552322-18181005fd82?auto=format&fit=crop&w=900&q=80',
+                desc: 'Half-cut mature coconut shells left over from cold-pressed oil production. Sun-dried and ready for craft carving or charcoal.'
+            },
+            {
+                id: 'n1',
+                type: 'need',
+                title: 'Seeking Coffee Grounds for Bio-Resin',
+                umkm: 'Kreatif Mandiri Craft Studio',
+                category: 'Organic',
+                qty: '10 kg / week',
+                availability: 'Ongoing Need',
+                condition: 'Clean',
+                location: 'Badung Regency',
+                price: 'Free / Negotiable',
+                image: 'https://images.unsplash.com/photo-1776176623814-a570759b5190?auto=format&fit=crop&w=900&q=80',
+                desc: 'Looking for consistent weekly supply of clean coffee grounds to blend into molded sustainable homeware and coasters.'
+            },
+            {
+                id: 'n2',
+                type: 'need',
+                title: 'Seeking Woven Textile Remnants',
+                umkm: 'Surya Upcycled Bags & Goods',
+                category: 'Textile',
+                qty: '15 kg / month',
+                availability: 'Ongoing Need',
+                condition: 'Dry',
+                location: 'Denpasar City',
+                price: 'Negotiable',
+                image: 'https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&w=900&q=80',
+                desc: 'Requiring durable cotton, canvas, or linen offcuts for artisan patchwork bags. Must be dry and free from oil stains.'
+            }
+        ];
+
+        let collaborations = [
+            {
+                id: 'c1',
+                supplier: 'Kopi Berkah Roastery',
+                seeker: 'Kreatif Mandiri Craft Studio',
+                material: 'Spent Coffee Grounds (10 kg / week)',
+                location: 'Badung Regency',
+                status: 'In Progress',
+                countedCompleted: false,
+                note: 'Weekly Friday afternoon pickup schedule confirmed.'
+            },
+            {
+                id: 'c2',
+                supplier: 'Nusantara Apparel Studio',
+                seeker: 'Surya Upcycled Bags & Goods',
+                material: 'Cotton & Linen Offcuts (15 kg / month)',
+                location: 'Denpasar City',
+                status: 'Accepted',
+                countedCompleted: false,
+                note: 'Initial 3 kg sample batch inspected and approved by Seeker.'
+            },
+            {
+                id: 'c3',
+                supplier: 'Sari Kelapa Virgin Oil Press',
+                seeker: 'Ubud Eco Briquette Co.',
+                material: 'Mature Coconut Shells (50 kg / week)',
+                location: 'Tabanan Regency',
+                status: 'Completed',
+                countedCompleted: true,
+                note: 'First monthly transfer completed and verified by both enterprises.'
+            }
+        ];
+
+        let unmetNeeds = [
+            {
+                title: 'Dried Cacao Pod Husks',
+                qty: '25 kg / month',
+                requester: 'Bali Chocoventure (Tabanan)',
+                note: 'Needed for natural potash & organic mulch.'
+            },
+            {
+                title: 'Amber Glass Syrup Bottles',
+                qty: '100 units / week',
+                requester: 'Jamu Warisan Botanicals (Denpasar)',
+                note: 'Intact, rinsed 250ml bottles.'
+            }
+        ];
+
+        function esc(value) {
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[ch]));
+        }
+
+        function setActiveNav(id) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const active = link.dataset.nav === id;
+                link.classList.toggle('is-active', active);
+                if (active) {
+                    link.setAttribute('aria-current', 'page');
+                } else {
+                    link.removeAttribute('aria-current');
+                }
+            });
+        }
+
+        function renderMatches() {
+            const container = document.getElementById('matching-container');
+            container.innerHTML = aiMatches.map(m => `
+                <article class="surface-card">
+                    <div class="match-top">
+                        <div>
+                            <span class="eyebrow eyebrow-moss">${esc(m.category)} Pairing</span>
+                            <h3 class="match-title">${esc(m.material)}</h3>
+                        </div>
+                        <span class="score-pill tabular-nums">${esc(m.score)}% Match Score</span>
+                    </div>
+
+                    <div class="pair-grid">
+                        <div class="pair-box">
+                            <div class="pair-meta">
+                                <span class="role-pill role-supplier">Supplier</span>
+                                <span class="pair-loc">${esc(m.supplier.location)}</span>
+                            </div>
+                            <p class="pair-name">${esc(m.supplier.name)}</p>
+                            <p class="pair-detail">Available Volume: <strong>${esc(m.supplier.qty)}</strong> &bull; Condition: ${esc(m.supplier.condition)}</p>
+                        </div>
+
+                        <div class="pair-box">
+                            <div class="pair-meta">
+                                <span class="role-pill role-seeker">Seeker</span>
+                                <span class="pair-loc">${esc(m.seeker.location)}</span>
+                            </div>
+                            <p class="pair-name">${esc(m.seeker.name)}</p>
+                            <p class="pair-detail">Required Volume: <strong>${esc(m.seeker.qty)}</strong> &bull; Use: ${esc(m.seeker.purpose)}</p>
+                        </div>
+                    </div>
+
+                    <div class="match-footer">
+                        <p class="match-reason">
+                            <strong>AI Reasoning:</strong>${esc(m.reasoning)}
+                        </p>
+                        <div class="match-actions">
+                            <button type="button" onclick="giveFeedback('${esc(m.id)}')" aria-pressed="${m.feedback ? 'true' : 'false'}" class="btn-subtle ${m.feedback ? 'is-active' : ''}">
+                                ${m.feedback ? 'Marked Relevant' : 'Mark Relevant'}
+                            </button>
+                            <button type="button" onclick="openDraftModal('${esc(m.id)}', this)" class="btn-primary">
+                                ${m.requested ? 'Request Sent (Edit Draft)' : 'Generate Action Draft'}
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderMarketplace() {
+            const grid = document.getElementById('marketplace-grid');
+            const countEl = document.getElementById('market-count');
+            const condFilter = document.getElementById('condition-filter').value;
+            const searchQuery = (document.getElementById('market-search').value || '').trim().toLowerCase();
+
+            const filtered = marketplaceItems.filter(item => {
+                const matchType = currentMarketType === 'all' || item.type === currentMarketType;
+                const matchCat = currentCategoryFilter === 'All' || item.category === currentCategoryFilter;
+                const matchCond = condFilter === 'All' || item.condition.toLowerCase().includes(condFilter.toLowerCase());
+                const matchSearch = !searchQuery ||
+                    item.title.toLowerCase().includes(searchQuery) ||
+                    item.umkm.toLowerCase().includes(searchQuery) ||
+                    item.location.toLowerCase().includes(searchQuery) ||
+                    item.desc.toLowerCase().includes(searchQuery);
+                return matchType && matchCat && matchCond && matchSearch;
+            });
+
+            countEl.textContent = `Showing ${filtered.length} of ${marketplaceItems.length} listings`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <p class="font-heading" style="font-size: 1.05rem; font-weight: 600; color: var(--ink);">No matching resources found</p>
+                        <p style="font-size: 0.8125rem; color: var(--muted);">Clear your active filters or submit a new resource listing above.</p>
+                        <button type="button" onclick="resetMarketFilters()" class="btn-subtle">Clear All Filters</button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <article class="market-card">
+                    <div>
+                        <div class="card-media">
+                            <img
+                                src="${esc(item.image)}"
+                                alt="${esc(item.title)} from ${esc(item.umkm)}"
+                                decoding="async"
+                                onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
+                            >
+                            <div class="card-badges">
+                                <span class="badge-type ${item.type === 'supply' ? 'badge-supply' : 'badge-need'}">
+                                    ${item.type === 'supply' ? 'Waste Supply' : 'Material Need'}
+                                </span>
+                                <span class="badge-meta">${esc(item.condition)} &bull; ${esc(item.category)}</span>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="card-org-row">
+                                <span>${esc(item.umkm)}</span>
+                                <span>${esc(item.location)}</span>
+                            </div>
+                            <h3 class="card-title">${esc(item.title)}</h3>
+                            <p class="card-desc">${esc(item.desc)}</p>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div>
+                            <span class="card-avail">${esc(item.availability)}</span>
+                            <span class="card-qty">${esc(item.qty)} &bull; ${esc(item.price)}</span>
+                        </div>
+                        <button type="button" onclick="openDraftFromMarketplace('${esc(item.id)}', this)" class="btn-card">
+                            Propose Match
+                        </button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderCollaborations() {
+            const list = document.getElementById('collab-list');
+            const badge = document.getElementById('collab-count-badge');
+            badge.textContent = `${collaborations.length} Recorded`;
+
+            const order = ['Pending', 'Accepted', 'In Progress', 'Completed'];
+            const statusClass = {
+                'Pending': 'status-pending',
+                'Accepted': 'status-accepted',
+                'In Progress': 'status-progress',
+                'Completed': 'status-completed'
+            };
+
+            list.innerHTML = collaborations.map(c => {
+                const step = order.indexOf(c.status) + 1;
+                const nextStatus = order[step % order.length];
+                return `
+                    <div class="collab-item">
+                        <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                            <div class="collab-parties">
+                                <span>${esc(c.supplier)}</span>
+                                <span class="collab-to">to</span>
+                                <span>${esc(c.seeker)}</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--ink); font-weight: 500;">${esc(c.material)} &bull; <span style="color: var(--muted); font-weight: 400;">${esc(c.location)}</span></p>
+                            <p style="font-size: 0.75rem; color: var(--muted);">"${esc(c.note)}"</p>
+                        </div>
+
+                        <button
+                            type="button"
+                            onclick="cycleStatus('${esc(c.id)}')"
+                            class="status-btn ${statusClass[c.status] || 'status-pending'}"
+                            aria-label="Status: ${esc(c.status)} (Step ${step} of 4). Click to advance to ${esc(nextStatus)}"
+                            title="Advance to ${esc(nextStatus)}"
+                        >
+                            <span>${esc(c.status)}</span>
+                            <span class="tabular-nums" style="opacity: 0.75;">${step}/4 &rarr;</span>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderCommunityPanel() {
+            const list = document.getElementById('unmet-needs-list');
+            list.innerHTML = unmetNeeds.map(item => `
+                <div class="gap-card">
+                    <div class="gap-top">
+                        <span style="font-size: 0.875rem; font-weight: 600; color: var(--ink);">${esc(item.title)}</span>
+                        <span class="gap-qty">${esc(item.qty)}</span>
+                    </div>
+                    <p style="font-size: 0.75rem; color: var(--muted); line-height: 1.5;">
+                        Requested by: ${esc(item.requester)} &mdash; ${esc(item.note)}
+                    </p>
+                </div>
+            `).join('');
+
+            document.getElementById('kpi-unmet-note').textContent = `${unmetNeeds.length} Unmet Needs`;
+
+            const topMatch = aiMatches[0];
+            document.getElementById('community-summary-text').textContent =
+                `"Organic coffee residue and cotton textile offcuts represent 68% of high-confidence matches in Badung and Denpasar this week. ${topMatch ? `Top active pairing: ${topMatch.material} (${topMatch.score}% relevance). ` : ''}Clean wood shavings and ${unmetNeeds.length} unmet material streams remain open for local suppliers."`;
+        }
+
+        function giveFeedback(matchId) {
+            const match = aiMatches.find(m => m.id === matchId);
+            if (!match) return;
+            match.feedback = !match.feedback;
+            renderMatches();
+            showToast(match.feedback ? 'Relevance feedback recorded for AI ranking.' : 'Relevance feedback removed.');
+        }
+
+        function openModal(id, trigger) {
+            lastFocusedTrigger = trigger || document.activeElement;
+            const modal = document.getElementById(id);
+            modal.hidden = false;
+            document.body.style.overflow = 'hidden';
+            const firstFocus = modal.querySelector('input:not([type="hidden"]):not([readonly]), select, textarea, button');
+            if (firstFocus) requestAnimationFrame(() => firstFocus.focus());
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal || modal.hidden) return;
+            modal.hidden = true;
+            const anyOpen = ['draft-modal', 'create-modal', 'assistant-drawer'].some(mid => !document.getElementById(mid).hidden);
+            if (!anyOpen) document.body.style.overflow = '';
+            if (lastFocusedTrigger && typeof lastFocusedTrigger.focus === 'function') {
+                lastFocusedTrigger.focus();
+                lastFocusedTrigger = null;
+            }
+        }
+
+        function handleBackdropClick(e, closeFn) {
+            if (e.target === e.currentTarget) closeFn();
+        }
+
+        function openDraftModal(matchId, trigger) {
+            const match = aiMatches.find(m => m.id === matchId);
+            if (!match) return;
+
+            document.getElementById('draft-match-id').value = match.id;
+            document.getElementById('draft-location').value = match.supplier.location || match.seeker.location;
+            document.getElementById('draft-score').textContent = `${match.score}% Semantic Match`;
+            document.getElementById('draft-summary').textContent = `${match.supplier.name} has ${match.supplier.qty} of ${match.material.toLowerCase()}, while ${match.seeker.name} requires ${match.seeker.qty} for ${match.seeker.purpose.toLowerCase()}.`;
+            document.getElementById('draft-supplier').textContent = `${match.supplier.name} (${match.supplier.location})`;
+            document.getElementById('draft-seeker').textContent = `${match.seeker.name} (${match.seeker.location})`;
+            document.getElementById('draft-material').value = match.material;
+            document.getElementById('draft-qty').value = match.seeker.qty;
+
+            openModal('draft-modal', trigger);
+        }
+
+        function openDraftFromMarketplace(itemId, trigger) {
+            const item = marketplaceItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            const isSupply = item.type === 'supply';
+            const supplierName = isSupply ? item.umkm : 'Your Enterprise (Supplier)';
+            const seekerName = isSupply ? 'Your Enterprise (Seeker)' : item.umkm;
+
+            document.getElementById('draft-match-id').value = '';
+            document.getElementById('draft-location').value = item.location;
+            document.getElementById('draft-score').textContent = 'Direct Marketplace Proposal';
+            document.getElementById('draft-summary').textContent = `Initiating a resource transfer proposal for ${item.title} (${item.qty}, ${item.condition}) located in ${item.location}.`;
+            document.getElementById('draft-supplier').textContent = `${supplierName} (${item.location})`;
+            document.getElementById('draft-seeker').textContent = `${seekerName} (${item.location})`;
+            document.getElementById('draft-material').value = item.title;
+            document.getElementById('draft-qty').value = item.qty;
+
+            openModal('draft-modal', trigger);
+        }
+
+        function closeDraftModal() {
+            closeModal('draft-modal');
+        }
+
+        function submitDraftCollaboration(e) {
+            e.preventDefault();
+            const matchId = document.getElementById('draft-match-id').value;
+            const supplierText = document.getElementById('draft-supplier').textContent.split(' (')[0];
+            const seekerText = document.getElementById('draft-seeker').textContent.split(' (')[0];
+            const material = document.getElementById('draft-material').value.trim();
+            const qty = document.getElementById('draft-qty').value.trim();
+            const freq = document.getElementById('draft-freq').value;
+            const location = document.getElementById('draft-location').value || 'Bali';
+            const notes = document.getElementById('draft-notes').value.trim();
+
+            if (!qty) return;
+
+            collaborations.unshift({
+                id: 'c' + Date.now(),
+                supplier: supplierText,
+                seeker: seekerText,
+                material: `${material} (${qty} • ${freq})`,
+                location,
+                status: 'Pending',
+                countedCompleted: false,
+                note: notes || 'Sample verification requested.'
+            });
+
+            if (matchId) {
+                const m = aiMatches.find(x => x.id === matchId);
+                if (m) m.requested = true;
+                renderMatches();
+            }
+
+            closeDraftModal();
+            renderCollaborations();
+            document.getElementById('collaborations').scrollIntoView({ behavior: 'smooth' });
+            showToast('Collaboration request submitted (Status: Pending)');
+        }
+
+        function cycleStatus(collabId) {
+            const order = ['Pending', 'Accepted', 'In Progress', 'Completed'];
+            const item = collaborations.find(c => c.id === collabId);
+            if (!item) return;
+
+            const nextIndex = (order.indexOf(item.status) + 1) % order.length;
+            item.status = order[nextIndex];
+
+            const kpiCollab = document.getElementById('kpi-collab');
+            const currentVal = parseInt(kpiCollab.textContent, 10);
+
+            if (item.status === 'Completed' && !item.countedCompleted) {
+                item.countedCompleted = true;
+                kpiCollab.textContent = currentVal + 1;
+                showToast('Collaboration verified as Completed! Community metric updated.');
+            } else if (item.status !== 'Completed' && item.countedCompleted) {
+                item.countedCompleted = false;
+                kpiCollab.textContent = Math.max(0, currentVal - 1);
+                showToast(`Collaboration status reset to: ${item.status}`);
+            } else {
+                showToast(`Collaboration status updated to: ${item.status}`);
+            }
+
+            renderCollaborations();
+        }
+
+        function setMarketType(type) {
+            currentMarketType = type;
+            ['all', 'supply', 'need'].forEach(t => {
+                const btn = document.getElementById(`mkt-${t}`);
+                const active = t === type;
+                btn.classList.toggle('is-active', active);
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            renderMarketplace();
+        }
+
+        function filterCategory(cat) {
+            currentCategoryFilter = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                const active = btn.dataset.cat === cat;
+                btn.classList.toggle('is-active', active);
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            renderMarketplace();
+        }
+
+        function resetMarketFilters() {
+            document.getElementById('market-search').value = '';
+            document.getElementById('condition-filter').value = 'All';
+            setMarketType('all');
+            filterCategory('All');
+        }
+
+        function openCreateModal(trigger) {
+            openModal('create-modal', trigger);
+        }
+
+        function closeCreateModal() {
+            closeModal('create-modal');
+        }
+
+        function setFormType(type) {
+            formEntryType = type;
+            const btnS = document.getElementById('form-type-supply');
+            const btnN = document.getElementById('form-type-need');
+            btnS.classList.toggle('is-active', type === 'supply');
+            btnS.setAttribute('aria-pressed', type === 'supply' ? 'true' : 'false');
+            btnN.classList.toggle('is-active', type === 'need');
+            btnN.setAttribute('aria-pressed', type === 'need' ? 'true' : 'false');
+        }
+
+        function findBestMatchForEntry(entry) {
+            const oppositeType = entry.type === 'supply' ? 'need' : 'supply';
+            const candidates = marketplaceItems.filter(item => item.type === oppositeType);
+            const entryWords = new Set((entry.title + ' ' + entry.desc).toLowerCase().split(/\W+/).filter(w => w.length > 3));
+
+            let best = null;
+            let bestScore = 0;
+
+            for (const cand of candidates) {
+                let score = 42;
+                if (cand.category === entry.category) score += 28;
+                if (cand.location === entry.location) score += 12;
+                if (cand.condition.toLowerCase() === entry.condition.toLowerCase()) score += 8;
+
+                const candWords = (cand.title + ' ' + cand.desc).toLowerCase().split(/\W+/);
+                const overlap = candWords.filter(w => entryWords.has(w)).length;
+                score += Math.min(8, overlap * 2);
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    best = cand;
+                }
+            }
+
+            if (best && bestScore >= 70) {
+                return {
+                    score: Math.min(97, bestScore),
+                    partner: best,
+                    reasoning: `Matched with ${best.umkm} (${best.location}) via ${entry.category.toLowerCase()} category alignment, ${entry.condition.toLowerCase()} condition compatibility, and regional proximity.`
+                };
+            }
+
+            return {
+                score: 88,
+                partner: null,
+                reasoning: `Live semantic match generated for "${entry.title}" based on ${entry.category.toLowerCase()} material attributes, ${entry.condition.toLowerCase()} condition, and regional demand in ${entry.location}.`
+            };
+        }
+
+        function handleCreateSubmit(e) {
+            e.preventDefault();
+            const umkm = document.getElementById('inp-umkm').value.trim();
+            const location = document.getElementById('inp-location').value;
+            const material = document.getElementById('inp-material').value.trim();
+            const category = document.getElementById('inp-category').value;
+            const qty = document.getElementById('inp-qty').value.trim();
+            const condition = document.getElementById('inp-condition').value;
+            const price = document.getElementById('inp-price').value;
+            const desc = document.getElementById('inp-desc').value.trim();
+
+            if (!umkm || !material || !qty || !desc) {
+                showToast('Please complete all required fields.');
+                return;
+            }
+
+            const newItem = {
+                id: 'item' + Date.now(),
+                type: formEntryType,
+                title: material,
+                umkm,
+                category,
+                qty,
+                availability: formEntryType === 'supply' ? 'Recurring Supply' : 'Active Need',
+                condition,
+                location,
+                price,
+                image: categoryImages[category] || categoryImages['Biomass & Craft'],
+                desc
+            };
+
+            const matchResult = findBestMatchForEntry(newItem);
+            marketplaceItems.unshift(newItem);
+
+            const partnerName = matchResult.partner
+                ? matchResult.partner.umkm
+                : (formEntryType === 'supply' ? 'Ubud Artisan & Upcycling Co.' : 'Verified Community Supplier');
+            const partnerLocation = matchResult.partner ? matchResult.partner.location : location;
+            const partnerQty = matchResult.partner ? matchResult.partner.qty : qty;
+
+            aiMatches.unshift({
+                id: 'm' + Date.now(),
+                score: matchResult.score,
+                material,
+                category,
+                supplier: {
+                    name: formEntryType === 'supply' ? umkm : partnerName,
+                    qty: formEntryType === 'supply' ? qty : partnerQty,
+                    condition,
+                    location: formEntryType === 'supply' ? location : partnerLocation
+                },
+                seeker: {
+                    name: formEntryType === 'need' ? umkm : partnerName,
+                    qty: formEntryType === 'need' ? qty : partnerQty,
+                    purpose: desc,
+                    location: formEntryType === 'need' ? location : partnerLocation
+                },
+                reasoning: matchResult.reasoning,
+                feedback: false,
+                requested: false
+            });
+
+            if (formEntryType === 'supply') {
+                const el = document.getElementById('kpi-waste');
+                el.textContent = parseInt(el.textContent, 10) + 1;
+            } else {
+                const el = document.getElementById('kpi-needs');
+                el.textContent = parseInt(el.textContent, 10) + 1;
+                if (!matchResult.partner) {
+                    unmetNeeds.unshift({
+                        title: material,
+                        qty,
+                        requester: `${umkm} (${location})`,
+                        note: desc
+                    });
+                }
+            }
+
+            closeCreateModal();
+            renderMatches();
+            renderMarketplace();
+            renderCommunityPanel();
+            document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth' });
+            showToast(`Published "${material}" with a ${matchResult.score}% AI match.`);
+        }
+
+        function toggleAssistant(open, trigger) {
+            if (open) {
+                openModal('assistant-drawer', trigger);
+            } else {
+                closeModal('assistant-drawer');
+            }
+        }
+
+        function sendQuickPrompt(text) {
+            document.getElementById('chat-input').value = text;
+            handleChatSubmit(new Event('submit'));
+        }
+
+        function buildAssistantReply(query) {
+            const q = query.toLowerCase();
+
+            if (q.includes('fabric') || q.includes('textile') || q.includes('linen') || q.includes('cotton') || q.includes('scrap')) {
+                const seeker = marketplaceItems.find(i => i.type === 'need' && i.category === 'Textile');
+                return {
+                    tag: 'Matched Platform Data',
+                    tagClass: 'eyebrow-moss',
+                    paragraphs: [
+                        'Upcycling Applications: Cotton and linen scraps work well for patchwork tote bags, quilted accessories, woven mats, and acoustic padding.',
+                        seeker
+                            ? `Active Seeker: ${seeker.umkm} (${seeker.location}) seeks ${seeker.qty} of ${seeker.title.toLowerCase()} (${seeker.condition}).`
+                            : 'Active Seeker: Surya Upcycled Bags & Goods (Denpasar City) is seeking 15 kg/month of dry cotton/linen offcuts.',
+                        'Disclaimer: Verify fabric dimensions and fiber composition directly with the partner prior to transfer.'
+                    ]
+                };
+            }
+
+            if (q.includes('coffee') || q.includes('ground') || q.includes('espresso')) {
+                const seeker = marketplaceItems.find(i => i.type === 'need' && i.category === 'Organic');
+                return {
+                    tag: 'Matched Platform Data',
+                    tagClass: 'eyebrow-moss',
+                    paragraphs: [
+                        'Upcycling Applications: Wet spent coffee grounds suit bio-resin composite coasters, oyster mushroom substrate, deodorizers, and compost.',
+                        seeker
+                            ? `Active Seeker: ${seeker.umkm} (${seeker.location}) requires ${seeker.qty} (${seeker.condition}).`
+                            : 'Active Seeker: Kreatif Mandiri Craft Studio (Badung Regency) requires 10 kg/week of clean coffee grounds.',
+                        'Guardrail Notice: Wet grounds should be processed or dried within 48 hours to prevent mold.'
+                    ]
+                };
+            }
+
+            if (q.includes('wood') || q.includes('teak') || q.includes('sawdust') || q.includes('shaving')) {
+                const supply = marketplaceItems.find(i => i.category === 'Wood');
+                return {
+                    tag: 'Wood & Timber Stream',
+                    tagClass: 'eyebrow-moss',
+                    paragraphs: [
+                        supply
+                            ? `Active Supply: ${supply.umkm} (${supply.location}) offers ${supply.qty} of ${supply.title} (${supply.condition}, ${supply.price}).`
+                            : 'Active Supply: Jati Bali Furniture Workshop offers 40 kg/week of untreated teak sawdust in Gianyar.',
+                        'Upcycling Applications: Untreated sawdust and shavings are ideal for mushroom cultivation logs, compressed fuel briquettes, and composite wood fillers.'
+                    ]
+                };
+            }
+
+            if (q.includes('coconut') || q.includes('shell') || q.includes('biomass')) {
+                const supply = marketplaceItems.find(i => i.category === 'Biomass & Craft');
+                return {
+                    tag: 'Biomass & Craft Stream',
+                    tagClass: 'eyebrow-moss',
+                    paragraphs: [
+                        supply
+                            ? `Active Supply: ${supply.umkm} (${supply.location}) lists ${supply.qty} of ${supply.title} (${supply.condition}).`
+                            : 'Coconut shells can be carved into tableware or carbonized into activated charcoal briquettes.',
+                        'Paired Seeker: Ubud Eco Briquette Co. actively sources dry mature coconut shells across Tabanan and Badung.'
+                    ]
+                };
+            }
+
+            if (q.includes('unmet') || q.includes('need') || q.includes('gap')) {
+                const itemsText = unmetNeeds.map((u, idx) => `${idx + 1}. ${u.title} (${u.qty}) — ${u.requester}`).join(' | ');
+                return {
+                    tag: 'Unmet Demand Summary',
+                    tagClass: 'eyebrow-terracotta',
+                    paragraphs: [
+                        `Currently ${unmetNeeds.length} material needs lack a matched local Supplier:`,
+                        itemsText
+                    ]
+                };
+            }
+
+            const supplyCount = document.getElementById('kpi-waste').textContent;
+            const needCount = document.getElementById('kpi-needs').textContent;
+            return {
+                tag: 'Platform Assistant',
+                tagClass: 'eyebrow-moss',
+                paragraphs: [
+                    `ReLink UMKM currently tracks ${supplyCount} active waste supply listings, ${needCount} material needs, and ${collaborations.length} collaboration threads across Organic, Textile, Wood, and Biomass & Craft.`,
+                    'Ask about coffee grounds, fabric scraps, wood sawdust, coconut shells, or unmet community needs—or click "Submit Listing / Need" to publish your material.'
+                ]
+            };
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const query = input.value.trim();
+            if (!query) return;
+
+            const container = document.getElementById('chat-messages');
+
+            const userWrap = document.createElement('div');
+            userWrap.className = 'chat-user-wrap fade-in';
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-user-msg';
+            userMsg.textContent = query;
+            userWrap.appendChild(userMsg);
+            container.appendChild(userWrap);
+
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+
+            const reply = buildAssistantReply(query);
+            setTimeout(() => {
+                const botBox = document.createElement('div');
+                botBox.className = 'chat-bot-msg fade-in';
+                const tag = document.createElement('span');
+                tag.className = `eyebrow ${reply.tagClass}`;
+                tag.textContent = reply.tag;
+                botBox.appendChild(tag);
+
+                reply.paragraphs.forEach(text => {
+                    const p = document.createElement('p');
+                    p.textContent = text;
+                    botBox.appendChild(p);
+                });
+
+                container.appendChild(botBox);
+                container.scrollTop = container.scrollHeight;
+            }, 180);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.hidden = false;
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.hidden = true;
+            }, 3200);
+        }
+
+        function initScrollSpy() {
+            if (!('IntersectionObserver' in window)) return;
+            const sections = ['overview', 'matching', 'marketplace', 'collaborations']
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
+
+            const observer = new IntersectionObserver(entries => {
+                const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+                if (visible) setActiveNav(visible.target.id);
+            }, { rootMargin: '-25% 0px -55% 0px', threshold: [0.1, 0.4] });
+
+            sections.forEach(sec => observer.observe(sec));
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            closeModal('draft-modal');
+            closeModal('create-modal');
+            closeModal('assistant-drawer');
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMatches();
+            renderMarketplace();
+            renderCollaborations();
+            renderCommunityPanel();
+            initScrollSpy();
+        });
+    </script>
+</body>
+</html>
